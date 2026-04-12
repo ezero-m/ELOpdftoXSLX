@@ -1,7 +1,7 @@
 """
-Brandweer E-learning PDF naar Thinkific Quiz Converter
+E-learning PDF naar Thinkific Quiz Converter
 
-Streamlit web-app die PDF's van de Brandweeracademie omzet naar
+Streamlit web-app die e-learning PDF's omzet naar
 quizvragen in Thinkific importformaat (.xlsx).
 """
 
@@ -21,8 +21,8 @@ from pdf_to_thinkific import (
 # Page config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="PDF naar Thinkific Quiz",
-    page_icon="🚒",
+    page_title="ELO PDF naar Thinkific Quiz",
+    page_icon="📝",
     layout="wide",
 )
 
@@ -77,7 +77,7 @@ for key, default in {
 # ---------------------------------------------------------------------------
 # Title
 # ---------------------------------------------------------------------------
-st.title("🚒 PDF naar Thinkific Quiz Converter")
+st.title("📝 ELO PDF naar Thinkific Quiz Converter")
 st.caption("Zet e-learning PDF's om naar quizvragen voor Thinkific")
 
 # ---------------------------------------------------------------------------
@@ -100,7 +100,7 @@ with st.sidebar:
     st.divider()
     st.markdown("**Tip:** Je kunt altijd terug naar een vorige stap.")
     st.divider()
-    st.caption("Brandweeracademie E-learning Tool v1.0")
+    st.caption("ELO PDF to XLSX v1.0")
 
 
 # ===================================================================
@@ -111,7 +111,7 @@ st.markdown('<div class="step-header">Stap 1: PDF uploaden</div>', unsafe_allow_
 uploaded_file = st.file_uploader(
     "Kies een PDF bestand van de leeromgeving",
     type=["pdf"],
-    help="Upload een PDF van een e-learning module (bijv. van de Brandweeracademie).",
+    help="Upload een PDF van een e-learning module.",
 )
 
 if uploaded_file:

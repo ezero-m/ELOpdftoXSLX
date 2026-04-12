@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Extract quiz questions from Brandweeracademie PDF e-learning modules
-and export them to Thinkific XLSX import format.
+"""E-learning PDF to Thinkific XLSX quiz converter.
 
-Backend module: PDF extraction, AI question generation, XLSX export.
-Used by both the CLI and the Streamlit GUI (app.py).
+Extracts text from e-learning PDF modules, generates quiz questions
+(via AI or manually), and exports to Thinkific import format (.xlsx).
+
+Backend module used by both the CLI and the Streamlit GUI (app.py).
 """
 
 import json
@@ -16,23 +17,20 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 
 NOISE_PATTERNS = [
-    r"^De Brandweeracademie is onderdeel van.*$",
-    r"^het Instituut Fysieke Veiligheid\.\s*$",
     r"^afbeelding:.*$",
-    r"^Waterongevallen\s*$",
-    r"^Welkom\s+",
+    r"^Welkom\s*$",
     r"^Samenvatting\s*$",
     r"^Over deze module\s*$",
 ]
 
-SYSTEM_PROMPT = """Je bent een expert in het extraheren van quizvragen uit Nederlandse brandweer e-learning materialen.
+SYSTEM_PROMPT = """Je bent een expert in het extraheren van quizvragen uit Nederlandse e-learning materialen.
 
 Je krijgt de volledige tekst van een e-learning PDF module. Je taak:
 
 1. Identificeer ALLE quiz/toetsvragen in de tekst. Dit omvat:
    - Directe meerkeuzevragen
    - Invulvragen (zet om naar meerkeuzevragen)
-   - Scenariovragen ("Welke redding pas je hier toe?")
+   - Scenariovragen
    - Kennisvragen over de lesstof
 
 2. Voor elke vraag, genereer een JSON-object met:
@@ -345,7 +343,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Brandweer e-learning PDF naar Thinkific XLSX quiz converter.",
+        description="E-learning PDF naar Thinkific XLSX quiz converter.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Voorbeelden:

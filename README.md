@@ -1,10 +1,10 @@
 # ELO PDF naar Thinkific Quiz Converter
 
-Zet e-learning PDF's (bijv. van de Brandweeracademie) om naar quizvragen die je kunt importeren in Thinkific.
+Zet e-learning PDF's om naar quizvragen die je direct kunt importeren in Thinkific.
 
 ## Wat doet deze tool?
 
-Deze tool haalt de lesstof uit een PDF en helpt je om daar meerkeuzevragen van te maken in het juiste formaat voor Thinkific. Je kunt vragen laten genereren door een AI-dienst, of de lesstof handmatig kopieren naar een AI naar keuze.
+Deze tool haalt de lesstof uit een e-learning PDF en helpt je om daar meerkeuzevragen van te maken in het juiste formaat voor Thinkific. Je kunt vragen laten genereren door een AI-dienst, of de lesstof handmatig kopieren naar een AI naar keuze.
 
 ### Mogelijkheden
 
