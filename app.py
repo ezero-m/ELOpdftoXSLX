@@ -6,6 +6,9 @@ quizvragen in Thinkific importformaat (.xlsx).
 """
 
 import json
+import os
+from pathlib import Path
+
 import streamlit as st
 
 from pdf_to_thinkific import (
@@ -16,6 +19,33 @@ from pdf_to_thinkific import (
     parse_questions_json,
     export_xlsx_to_bytes,
 )
+
+# ---------------------------------------------------------------------------
+# API key storage (local only, never on Streamlit Cloud)
+# ---------------------------------------------------------------------------
+KEY_FILE = Path.home() / ".elo_pdf_to_xlsx_keys.json"
+IS_LOCAL = not os.environ.get("STREAMLIT_SHARING_MODE") and not os.environ.get("STREAMLIT_SERVER_HEADLESS")
+
+
+def _load_saved_keys() -> dict:
+    if KEY_FILE.exists():
+        try:
+            return json.loads(KEY_FILE.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {}
+
+
+def _save_key(provider: str, key: str):
+    keys = _load_saved_keys()
+    keys[provider] = key
+    KEY_FILE.write_text(json.dumps(keys, indent=2), encoding="utf-8")
+
+
+def _delete_key(provider: str):
+    keys = _load_saved_keys()
+    keys.pop(provider, None)
+    KEY_FILE.write_text(json.dumps(keys, indent=2), encoding="utf-8")
 
 # ---------------------------------------------------------------------------
 # Page config
@@ -245,18 +275,47 @@ with tab_ai:
 
     api_key = None
     if info["needs_api_key"]:
+        saved_keys = _load_saved_keys()
+        saved_key = saved_keys.get(provider, "")
+
         st.markdown(f"""
         **API key nodig** — [Maak er hier een aan]({info['key_url']})
 
         Een API key is een soort wachtwoord waarmee de app verbinding maakt met de AI-dienst.
-        De key wordt niet opgeslagen en alleen gebruikt voor deze sessie.
         """)
-        api_key = st.text_input(
-            f"{info['name']} API Key",
-            type="password",
-            placeholder=f"Plak hier je {info['env_key']} key...",
-            help=f"Ga naar {info['key_url']} om een key aan te maken.",
-        )
+
+        if saved_key:
+            st.success(f"Opgeslagen API key gevonden voor {info['name']}.")
+            use_saved = st.checkbox("Opgeslagen key gebruiken", value=True, key="use_saved")
+            if use_saved:
+                api_key = saved_key
+            else:
+                api_key = st.text_input(
+                    f"{info['name']} API Key",
+                    type="password",
+                    placeholder=f"Plak hier je {info['env_key']} key...",
+                    help=f"Ga naar {info['key_url']} om een key aan te maken.",
+                )
+            if st.button("Opgeslagen key verwijderen", key="delete_key"):
+                _delete_key(provider)
+                st.rerun()
+        else:
+            api_key = st.text_input(
+                f"{info['name']} API Key",
+                type="password",
+                placeholder=f"Plak hier je {info['env_key']} key...",
+                help=f"Ga naar {info['key_url']} om een key aan te maken.",
+            )
+            if api_key:
+                save_key = st.checkbox(
+                    "API key onthouden op deze computer",
+                    value=False,
+                    key="save_key",
+                    help="De key wordt lokaal opgeslagen zodat je hem niet elke keer opnieuw hoeft in te vullen.",
+                )
+                if save_key:
+                    _save_key(provider, api_key)
+                    st.success("Key opgeslagen!")
     else:
         st.info("""
         **Ollama draait lokaal op je computer** — er is geen API key nodig.

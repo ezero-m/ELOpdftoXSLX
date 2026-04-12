@@ -24,11 +24,11 @@ Geen installatie nodig. Werkt op elke computer met een browser.
 
 ## Lokaal draaien
 
-### Vereisten
+Zie **[INSTALLATIE.md](INSTALLATIE.md)** voor een uitgebreide stap-voor-stap handleiding voor Windows en Mac (geen technische kennis vereist).
 
-- Python 3.10 of hoger
+Bij lokaal gebruik kun je API keys opslaan zodat je ze niet elke keer opnieuw hoeft in te vullen.
 
-### Installatie
+### Snelle versie
 
 ```bash
 git clone https://github.com/ezero-m/ELOpdftoXSLX.git
