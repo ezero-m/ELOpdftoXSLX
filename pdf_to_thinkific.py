@@ -23,39 +23,68 @@ NOISE_PATTERNS = [
     r"^Over deze module\s*$",
 ]
 
-SYSTEM_PROMPT = """Je bent een expert in het extraheren van quizvragen uit Nederlandse e-learning materialen.
+SYSTEM_PROMPT = """Je bent een expert in het maken van quizvragen op basis van Nederlandse e-learning materialen.
 
-Je krijgt de volledige tekst van een e-learning PDF module. Je taak:
+Je krijgt de volledige tekst van een e-learning PDF module. Je taak: maak quizvragen die de **kennis en leerdoelen** uit de tekst toetsen.
 
-1. Identificeer ALLE quiz/toetsvragen in de tekst. Dit omvat:
-   - Directe meerkeuzevragen
-   - Invulvragen (zet om naar meerkeuzevragen)
-   - Scenariovragen
-   - Kennisvragen over de lesstof
+== BELANGRIJK: AUTEURSRECHT EN HERFORMULERING ==
 
-2. Voor elke vraag, genereer een JSON-object met:
+Vragen en antwoorden mogen NOOIT letterlijk uit de bron-PDF worden overgenomen. De bron-PDF is auteursrechtelijk beschermd materiaal. Jouw output moet een **eigen, originele formulering** zijn van dezelfde onderliggende kennis.
+
+Concreet betekent dit:
+- Gebruik je eigen zinsstructuur en woordkeuze, NIET die van de bron
+- Verzin waar mogelijk eigen scenarios, voorbeelden of contexten om de kennis te toetsen (zo min mogelijk de originele zinnen, casussen of voorbeelden hergebruiken)
+- Cijfers, normen, vakbegrippen en eigennamen mogen wel hetzelfde blijven (die zijn feitelijk, geen creatief werk)
+- Vermijd het overnemen van hele zinsdelen van 5+ woorden uit de bron
+- Stel vragen vanuit een andere invalshoek dan hoe de stof in de PDF gepresenteerd wordt (bijv. praktijkcasus ipv definitie, of "wat als..." ipv "wat is...")
+
+Voorbeeld van verkeerd vs goed:
+
+PDF-tekst: "Een grijpredding mag uitgevoerd worden als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is."
+
+❌ FOUT (te letterlijk):
+  Vraag: "Wanneer mag een grijpredding uitgevoerd worden?"
+  Antwoord: "Als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is"
+
+✅ GOED (herformuleerd via scenario):
+  Vraag: "Een persoon ligt 12 meter uit de oever in water dat 1 meter diep is. Welke reddingsmethode is hier toegestaan voor een individuele manschap?"
+  Antwoord: "Een grijpredding"
+  Uitleg: "Bij afstanden tot 15 m en dieptes tot 1,5 m valt dit binnen de grenzen voor een grijpredding."
+
+== WAT JE MOET DOEN ==
+
+1. Identificeer de belangrijkste leerdoelen en feiten in de tekst (definities, normen, procedures, oorzaken/gevolgen, beslismomenten, risico's, etc.)
+
+2. Maak voor elk leerdoel een quizvraag die de kennis toetst, in eigen formulering. Wissel waar zinvol af tussen:
+   - Praktijkscenario's ("Bij situatie X, wat doe je?")
+   - Toepassingsvragen ("Welke methode past het beste bij...?")
+   - Vergelijkingsvragen ("Wat is het verschil tussen X en Y?")
+   - Begripsvragen (omschrijf zonder de definitie letterlijk te kopieren)
+
+3. Voor elke vraag, genereer een JSON-object met:
    - "type": "SA" (een correct antwoord) of "MA" (meerdere correcte antwoorden)
-   - "question": de vraagtekst, helder en zelfstandig leesbaar geformuleerd
-   - "explanation": korte uitleg (1-2 zinnen) waarom het antwoord correct is
+   - "question": de vraagtekst in eigen woorden, helder en zelfstandig leesbaar
+   - "explanation": korte uitleg (1-2 zinnen) waarom het antwoord correct is, eveneens in eigen woorden
    - "choices": lijst van antwoorden als objecten met {"text": "...", "correct": true/false}
      - Minimaal 3, maximaal 6 antwoorden per vraag
      - Bij SA: precies 1 correct antwoord
      - Bij MA: 2 of meer correcte antwoorden
-     - Afleidende antwoorden moeten realistisch en vakinhoudelijk relevant zijn
+     - Afleidende antwoorden moeten realistisch en vakinhoudelijk plausibel zijn (geen voor-de-hand-liggende onzin)
+     - Ook de antwoorden in eigen formulering, niet letterlijk uit de bron
 
-3. Baseer de correcte antwoorden UITSLUITEND op de informatie in de lesstof.
+4. Baseer correcte antwoorden UITSLUITEND op informatie die werkelijk in de lesstof staat. Verzin geen feiten.
 
-4. Negeer navigatie-elementen, headers, footers en afbeeldingsbeschrijvingen.
+5. Negeer navigatie-elementen, headers, footers en afbeeldingsbeschrijvingen.
 
-Antwoord ALLEEN met een JSON-array van vraag-objecten. Geen andere tekst."""
+Antwoord ALLEEN met een JSON-array van vraag-objecten. Geen andere tekst, geen markdown code blocks."""
 
-USER_PROMPT_TEMPLATE = """Extraheer alle quizvragen uit de volgende e-learning module tekst en zet ze om naar het gevraagde JSON-formaat.
+USER_PROMPT_TEMPLATE = """Maak quizvragen op basis van onderstaande e-learning lesstof. Gebruik EIGEN FORMULERINGEN — neem nooit zinnen letterlijk over uit de bron (auteursrecht).
 
 === BEGIN LESSTOF ===
 {text}
 === EINDE LESSTOF ===
 
-Antwoord met een JSON-array:"""
+Antwoord met een JSON-array van vraag-objecten:"""
 
 AI_PROVIDERS = {
     "claude": {

@@ -110,6 +110,11 @@ for key, default in {
 st.title("📝 ELO PDF naar Thinkific Quiz Converter")
 st.caption("Zet e-learning PDF's om naar quizvragen voor Thinkific")
 
+st.info(
+    "**Auteursrecht:** vragen worden in eigen formulering gegenereerd, niet letterlijk uit de "
+    "bron-PDF gekopieerd. Controleer toch altijd zelf de output voordat je deze publiceert."
+)
+
 # ---------------------------------------------------------------------------
 # Sidebar: how it works
 # ---------------------------------------------------------------------------

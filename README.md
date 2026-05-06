@@ -14,6 +14,15 @@ Deze tool haalt de lesstof uit een e-learning PDF en helpt je om daar meerkeuzev
 - Vragen per stuk controleren en aanpassen
 - Exporteren naar Thinkific XLSX-importbestand
 
+### Auteursrecht
+
+De prompt instrueert de AI nadrukkelijk om vragen **in eigen formulering** te maken
+en NOOIT letterlijke zinsdelen uit de bron-PDF over te nemen. De gegenereerde vragen
+toetsen dezelfde kennis, maar via eigen woordkeuze, scenario's en invalshoek. Cijfers,
+normen en vakbegrippen blijven uiteraard hetzelfde — die zijn feitelijk.
+
+Controleer altijd de output zelf voordat je publiceert.
+
 ## Snel starten (online)
 
 Open de gehoste versie:
