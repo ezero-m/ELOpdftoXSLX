@@ -135,7 +135,7 @@ with st.sidebar:
     st.divider()
     st.markdown("**Tip:** Je kunt altijd terug naar een vorige stap.")
     st.divider()
-    st.caption("ELO PDF to XLSX v1.0")
+    st.caption("ELO PDF to XLSX v1.1")
 
 
 # ===================================================================
