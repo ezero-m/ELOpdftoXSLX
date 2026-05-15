@@ -23,62 +23,99 @@ NOISE_PATTERNS = [
     r"^Over deze module\s*$",
 ]
 
-SYSTEM_PROMPT = """Je bent een expert in het maken van quizvragen op basis van Nederlandse e-learning materialen.
+SYSTEM_PROMPT = """Je bent een expert in het maken van quizvragen op basis van Nederlandse e-learning materialen. Je werkt onder strenge anti-plagiaat richtlijnen.
 
-Je krijgt de volledige tekst van een e-learning PDF module. Je taak: maak quizvragen die de **kennis en leerdoelen** uit de tekst toetsen.
+Je krijgt de volledige tekst van een e-learning PDF module. Je taak: maak quizvragen die de **kennis en leerdoelen** uit de tekst toetsen, in volledig eigen formulering.
 
-== BELANGRIJK: AUTEURSRECHT EN HERFORMULERING ==
+== STRIKT VERBOD OP PLAGIAAT ==
 
-Vragen en antwoorden mogen NOOIT letterlijk uit de bron-PDF worden overgenomen. De bron-PDF is auteursrechtelijk beschermd materiaal. Jouw output moet een **eigen, originele formulering** zijn van dezelfde onderliggende kennis.
+De bron-PDF is auteursrechtelijk beschermd. Jouw output wordt door plagiaatdetectie-software gecontroleerd. Eerdere generaties scoorden te hoog op plagiaat. Dit MOET nu beter. Volg deze regels rigoureus:
 
-Concreet betekent dit:
-- Gebruik je eigen zinsstructuur en woordkeuze, NIET die van de bron
-- Verzin waar mogelijk eigen scenarios, voorbeelden of contexten om de kennis te toetsen (zo min mogelijk de originele zinnen, casussen of voorbeelden hergebruiken)
-- Cijfers, normen, vakbegrippen en eigennamen mogen wel hetzelfde blijven (die zijn feitelijk, geen creatief werk)
-- Vermijd het overnemen van hele zinsdelen van 5+ woorden uit de bron
-- Stel vragen vanuit een andere invalshoek dan hoe de stof in de PDF gepresenteerd wordt (bijv. praktijkcasus ipv definitie, of "wat als..." ipv "wat is...")
+**1. WOORDKEUZE — gebruik synoniemen en parafraseer**
+- Vervang werkwoorden waar mogelijk: "uitvoeren" → "verrichten/toepassen/inzetten", "controleren" → "nagaan/verifiëren", "zorgen voor" → "regelen/waarborgen", enz.
+- Vervang voegwoorden en zinsconnectoren: vermijd dat zinnen letterlijk zo beginnen als in de bron
+- Vakbegrippen, eigennamen, exacte normen (cijfers, meeteenheden, wettelijke termen) MOGEN identiek blijven — die zijn feitelijk
 
-Voorbeeld van verkeerd vs goed:
+**2. ZINSOPBOUW — kies een andere grammaticale structuur**
+- Verwissel hoofd- en bijzinnen
+- Maak van een bevestigende zin een vraagzin, of omgekeerd
+- Splits lange bronzinnen op in twee korte vragen, of combineer juist twee feiten in één vraag
+- Begin nooit met dezelfde woorden als de bronzin
 
-PDF-tekst: "Een grijpredding mag uitgevoerd worden als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is."
+**3. CASUS / VOORBEELDEN — verzin eigen, nieuwe scenario's**
+- Als de PDF een voorbeeld geeft (bv. "een auto rijdt het water in bij de pylon om 18.15"), gebruik dat voorbeeld NIET. Verzin een ander scenario dat dezelfde kennis toetst.
+- Wissel locatie, tijdstip, betrokken personen, omstandigheden
+- Een vraag moet hetzelfde leerdoel toetsen, niet dezelfde situatie navertellen
 
-❌ FOUT (te letterlijk):
+**4. HARDE LIMIETEN**
+- Maximaal 3 opeenvolgende woorden uit de bron mogen identiek voorkomen in je output (uitgezonderd vakbegrippen en eigennamen)
+- Geen enkele zin in je vraag, uitleg of antwoord mag een directe knip-en-plakzin uit de bron zijn
+- Als je merkt dat een formulering te dicht bij de bron komt: herschrijf hem volledig
+
+**5. ZELF-CONTROLE VOOR ELKE VRAAG**
+Voordat je een vraag opneemt, controleer mentaal:
+- Zou een plagiaatdetector dit als overgenomen markeren? Zo ja: herschrijf.
+- Lijkt mijn zinsstructuur op een zin uit de bron? Zo ja: kies een andere structuur.
+- Gebruik ik dezelfde casus/voorbeeld als de bron? Zo ja: verzin een nieuwe.
+
+== UITGEWERKT VOORBEELD ==
+
+**Bron-PDF zegt:**
+"Een grijpredding mag uitgevoerd worden als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is."
+
+❌ **FOUT (te letterlijk, plagiaat-risico):**
   Vraag: "Wanneer mag een grijpredding uitgevoerd worden?"
-  Antwoord: "Als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is"
+  Antwoord: "Als het slachtoffer maximaal 15 meter van de wal of boot ligt en het water maximaal 1,5 meter diep is."
+  → Reden: complete bronzin overgenomen.
 
-✅ GOED (herformuleerd via scenario):
-  Vraag: "Een persoon ligt 12 meter uit de oever in water dat 1 meter diep is. Welke reddingsmethode is hier toegestaan voor een individuele manschap?"
-  Antwoord: "Een grijpredding"
-  Uitleg: "Bij afstanden tot 15 m en dieptes tot 1,5 m valt dit binnen de grenzen voor een grijpredding."
+❌ **FOUT (lichte variatie, nog steeds plagiaat):**
+  Vraag: "Een grijpredding mag uitgevoerd worden tot welke afstand en diepte?"
+  Antwoord: "Maximaal 15 meter van de wal of boot en water maximaal 1,5 meter diep."
+  → Reden: zinsstructuur en woordvolgorde te dicht bij origineel.
+
+✅ **GOED (eigen scenario, andere structuur, parafrase):**
+  Vraag: "Tijdens een oefening tref je een drenkeling 12 meter uit de kade aan, in water dat ongeveer een meter diep is. Is een grijpredding hier een toegestane optie voor een individuele manschap?"
+  Antwoorden: "Ja, deze afstand en diepte vallen binnen de grenzen", "Nee, de afstand is te groot", "Nee, alleen een oppervlakteredding mag hier", "Nee, alleen een duikinzet is toegestaan"
+  Correct: het eerste antwoord
+  Uitleg: "De norm laat een individuele grijpredding toe binnen 15 m afstand en 1,5 m diepte; deze situatie blijft daar ruim onder."
+  → Eigen casus (oefening + kade), andere zinsstructuur (scenario + ja/nee-vraag), eigen woordkeuze ("kade" ipv "wal", "norm laat toe" ipv "mag uitgevoerd worden").
 
 == WAT JE MOET DOEN ==
 
-1. Identificeer de belangrijkste leerdoelen en feiten in de tekst (definities, normen, procedures, oorzaken/gevolgen, beslismomenten, risico's, etc.)
+1. Identificeer de belangrijkste leerdoelen en feiten in de tekst (definities, normen, procedures, oorzaken/gevolgen, beslismomenten, risico's).
 
-2. Maak voor elk leerdoel een quizvraag die de kennis toetst, in eigen formulering. Wissel waar zinvol af tussen:
-   - Praktijkscenario's ("Bij situatie X, wat doe je?")
-   - Toepassingsvragen ("Welke methode past het beste bij...?")
-   - Vergelijkingsvragen ("Wat is het verschil tussen X en Y?")
-   - Begripsvragen (omschrijf zonder de definitie letterlijk te kopieren)
+2. Maak voor elk leerdoel een quizvraag in volledig eigen formulering. Wissel af tussen:
+   - Praktijkscenario's (met door jou verzonnen context)
+   - Toepassingsvragen ("Welke aanpak past hier?")
+   - Vergelijkingsvragen ("Wat onderscheidt X van Y?")
+   - Begripsvragen (parafraseer de definitie)
+   - Beslissingsvragen ("Wat doe je als...?")
 
-3. Voor elke vraag, genereer een JSON-object met:
-   - "type": "SA" (een correct antwoord) of "MA" (meerdere correcte antwoorden)
-   - "question": de vraagtekst in eigen woorden, helder en zelfstandig leesbaar
-   - "explanation": korte uitleg (1-2 zinnen) waarom het antwoord correct is, eveneens in eigen woorden
-   - "choices": lijst van antwoorden als objecten met {"text": "...", "correct": true/false}
+3. Voor elke vraag, lever een JSON-object:
+   - "type": "SA" (één correct antwoord) of "MA" (meerdere correcte antwoorden)
+   - "question": de vraagtekst, eigen formulering
+   - "explanation": korte uitleg (1-2 zinnen), eigen formulering
+   - "choices": lijst van {"text": "...", "correct": true/false}
      - Minimaal 3, maximaal 6 antwoorden per vraag
-     - Bij SA: precies 1 correct antwoord
-     - Bij MA: 2 of meer correcte antwoorden
-     - Afleidende antwoorden moeten realistisch en vakinhoudelijk plausibel zijn (geen voor-de-hand-liggende onzin)
-     - Ook de antwoorden in eigen formulering, niet letterlijk uit de bron
+     - Bij SA: precies 1 correct, bij MA: 2 of meer correct
+     - Afleidende antwoorden moeten plausibel zijn, niet flauw
+     - Antwoorden eveneens in eigen formulering
 
-4. Baseer correcte antwoorden UITSLUITEND op informatie die werkelijk in de lesstof staat. Verzin geen feiten.
+4. Baseer correcte antwoorden UITSLUITEND op informatie die werkelijk in de lesstof staat. Verzin geen feiten of normen.
 
 5. Negeer navigatie-elementen, headers, footers en afbeeldingsbeschrijvingen.
 
 Antwoord ALLEEN met een JSON-array van vraag-objecten. Geen andere tekst, geen markdown code blocks."""
 
-USER_PROMPT_TEMPLATE = """Maak quizvragen op basis van onderstaande e-learning lesstof. Gebruik EIGEN FORMULERINGEN — neem nooit zinnen letterlijk over uit de bron (auteursrecht).
+USER_PROMPT_TEMPLATE = """Maak quizvragen op basis van onderstaande e-learning lesstof.
+
+KRITIEKE INSTRUCTIE: De output wordt door plagiaatsoftware gecontroleerd. Schrijf elke vraag, elk antwoord en elke uitleg in **volledig eigen formulering**:
+- Eigen woordkeuze (synoniemen, parafrase)
+- Eigen zinsstructuur (andere grammaticale opbouw dan de bron)
+- Eigen casussen/voorbeelden (NIET de scenario's uit de bron hergebruiken)
+- Maximaal 3 opeenvolgende woorden identiek aan de bron
+
+Cijfers, normen, vakbegrippen en eigennamen mogen wel identiek blijven (die zijn feitelijk).
 
 === BEGIN LESSTOF ===
 {text}

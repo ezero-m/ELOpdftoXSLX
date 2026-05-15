@@ -110,9 +110,10 @@ for key, default in {
 st.title("📝 ELO PDF naar Thinkific Quiz Converter")
 st.caption("Zet e-learning PDF's om naar quizvragen voor Thinkific")
 
-st.info(
-    "**Auteursrecht:** vragen worden in eigen formulering gegenereerd, niet letterlijk uit de "
-    "bron-PDF gekopieerd. Controleer toch altijd zelf de output voordat je deze publiceert."
+st.warning(
+    "**Anti-plagiaat:** vragen worden in volledig eigen woordkeuze, zinsopbouw én met eigen "
+    "casussen gegenereerd — niet overgenomen uit de bron-PDF. Cijfers, normen en vakbegrippen "
+    "blijven uiteraard wel hetzelfde. Controleer altijd de output zelf voor publicatie."
 )
 
 # ---------------------------------------------------------------------------
@@ -135,7 +136,7 @@ with st.sidebar:
     st.divider()
     st.markdown("**Tip:** Je kunt altijd terug naar een vorige stap.")
     st.divider()
-    st.caption("ELO PDF to XLSX v1.1")
+    st.caption("ELO PDF to XLSX v1.2")
 
 
 # ===================================================================
